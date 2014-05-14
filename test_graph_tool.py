@@ -4,6 +4,7 @@
 from time import time
 from itertools import chain
 from collections import defaultdict
+from numpy import nan_to_num
 from graph_tool import Graph
 from graph_tool.centrality import closeness
 from graph_tool.draw import (
@@ -47,7 +48,10 @@ def compose_graph(lines):
             e_count_p[e] += 1
 
     # calculate closeness
-    closeness(g, weight=e_count_p, vprop=v_closeness_p)
+    e_inverse_count_p = g.new_edge_property('int')
+    e_inverse_count_p.a = e_count_p.a.max()-e_count_p.a
+    closeness(g, weight=e_inverse_count_p, vprop=v_closeness_p)
+    v_closeness_p.a = nan_to_num(v_closeness_p.a)
 
     return g
 
@@ -164,7 +168,7 @@ def analyze_graph(g):
     v_closeness_p = g.vp['closeness']
     print 'Top 10 Vertex by Closeness:'
     print
-    for no, vidx in enumerate(v_closeness_p.a.argsort()[:10], 1):
+    for no, vidx in enumerate(v_closeness_p.a.argsort()[-10:][::-1], 1):
         v = g.vertex(vidx)
         print '    {:2}. {:2} {:f}'.format(
             no,
