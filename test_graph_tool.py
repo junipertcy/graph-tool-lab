@@ -6,6 +6,7 @@ from itertools import chain
 from collections import defaultdict
 from numpy.random import seed
 from graph_tool import Graph
+from graph_tool.centrality import closeness
 from graph_tool.draw import (
     prop_to_size,
     graph_draw,
@@ -20,6 +21,7 @@ def compose_graph(lines):
     g = Graph()
     g.vp['name'] = v_name_p = g.new_vertex_property('string')
     g.vp['count'] = v_count_p = g.new_vertex_property('int')
+    g.vp['closeness'] = v_closeness_p = g.new_vertex_property('float')
     g.ep['count'] = e_count_p = g.new_edge_property('int')
 
     # create vertices
@@ -44,6 +46,9 @@ def compose_graph(lines):
                 e_count_p[e] = 0
                 vv_e_map[vv] = e
             e_count_p[e] += 1
+
+    # calculate closeness
+    closeness(g, weight=e_count_p, vprop=v_closeness_p)
 
     return g
 
@@ -138,9 +143,9 @@ def analyze_graph(g):
     print 'The graph: {}'.format(g)
     print
 
-    v_count_p = g.vp['count']
     v_name_p = g.vp['name']
-    print 'Top 10 Vertex:'
+    v_count_p = g.vp['count']
+    print 'Top 10 Vertex by Count:'
     print
     for no, vidx in enumerate(v_count_p.a.argsort()[-10:][::-1], 1):
         v = g.vertex(vidx)
@@ -148,6 +153,18 @@ def analyze_graph(g):
             no,
             v_name_p[v],
             v_count_p[v],
+        )
+    print
+
+    v_closeness_p = g.vp['closeness']
+    print 'Top 10 Vertex by Closeness:'
+    print
+    for no, vidx in enumerate(v_closeness_p.a.argsort()[:10], 1):
+        v = g.vertex(vidx)
+        print '    {:2}. {:2} {:f}'.format(
+            no,
+            v_name_p[v],
+            v_closeness_p[v],
         )
     print
 
