@@ -6,7 +6,13 @@ from itertools import chain
 from collections import defaultdict
 from numpy.random import seed
 from graph_tool import Graph
-from graph_tool.draw import prop_to_size, graph_draw
+from graph_tool.draw import (
+    prop_to_size,
+    graph_draw,
+    sfdp_layout,
+    fruchterman_reingold_layout,
+    arf_layout,
+)
 
 def main():
 
@@ -74,7 +80,48 @@ def main():
         output = "output/random-3.pdf",
         vertex_fill_color = v_size,
     ))
+    graph_draw(**arg_map)
 
+    # use sfdp_layout
+    arg_map.update(dict(
+        output = "output/sfdp-1.pdf",
+        pos = sfdp_layout(g),
+    ))
+    graph_draw(**arg_map)
+
+    # sfdp_layout with weight
+    arg_map.update(dict(
+        output = "output/sfdp-2.pdf",
+        pos = sfdp_layout(g, vweight=v_count_p, eweight=e_count_p),
+    ))
+    graph_draw(**arg_map)
+
+    # use fruchterman_reingold_layout
+    arg_map.update(dict(
+        output = "output/fr-1.pdf",
+        pos = fruchterman_reingold_layout(g),
+    ))
+    graph_draw(**arg_map)
+
+    # use fruchterman_reingold_layout with weight
+    arg_map.update(dict(
+        output = "output/fr-2.pdf",
+        pos = fruchterman_reingold_layout(g, weight=e_count_p),
+    ))
+    graph_draw(**arg_map)
+
+    # use arf_layout
+    arg_map.update(dict(
+        output = "output/arf-1.pdf",
+        pos = arf_layout(g),
+    ))
+    graph_draw(**arg_map)
+
+    # use arf_layout with weight
+    arg_map.update(dict(
+        output = "output/arf-2.pdf",
+        pos = arf_layout(g, weight=e_count_p),
+    ))
     graph_draw(**arg_map)
 
 if __name__ == '__main__':
