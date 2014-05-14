@@ -45,13 +45,11 @@ def main():
             e_count_p[e] += 1
 
     # draw the graph
-
     size = 400
     ma_v_size = 400 / 20.
     mi_v_size = ma_v_size / 2.
     ma_e_pwidth = ma_v_size / 4.
     mi_e_pwidth = ma_e_pwidth / 2.
-
     arg_map = dict(
         g = g,
         output = "output/random-1.pdf",
@@ -59,24 +57,19 @@ def main():
         vertex_size = ma_v_size,
         edge_pen_width = ma_e_pwidth,
     )
-
     graph_draw(**arg_map)
 
     # use prop_to_size to draw
-
     v_size = prop_to_size(v_count_p, mi_v_size, ma_v_size)
     e_pwidth = prop_to_size(e_count_p, mi_e_pwidth, ma_e_pwidth)
-
     arg_map.update(dict(
         output = "output/random-2.pdf",
         vertex_size = v_size,
         edge_pen_width = e_pwidth,
     ))
-
     graph_draw(**arg_map)
 
     # use fill_color
-
     arg_map.update(dict(
         output = "output/random-3.pdf",
         vertex_fill_color = v_size,
