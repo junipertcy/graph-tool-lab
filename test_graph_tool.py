@@ -60,80 +60,86 @@ MI_E_PWIDTH = MA_E_PWIDTH / 2.
 
 def render_graph(g, path='output/{}.pdf'):
 
-    # draw the graph
+    # the simplest way
     arg_map = dict(
         g = g,
-        output = path.format('random-1'),
-        output_size = (SIZE, SIZE),
-        vertex_size = MA_V_SIZE,
-        edge_pen_width = MA_E_PWIDTH,
+        output = path.format('1-1-random-simplest'),
     )
     graph_draw(**arg_map)
 
-    # use prop_to_size to draw
+    # use constants
+    arg_map.update(dict(
+        output = path.format('1-2-random-constant'),
+        output_size = (SIZE, SIZE),
+        vertex_size = MA_V_SIZE,
+        edge_pen_width = MA_E_PWIDTH,
+    ))
+    graph_draw(**arg_map)
+
+    # use prop_to_size
     v_count_p = g.vp['count']
     e_count_p = g.ep['count']
-    v_size = prop_to_size(v_count_p, MI_V_SIZE, MA_V_SIZE)
-    e_pwidth = prop_to_size(e_count_p, MI_E_PWIDTH, MA_E_PWIDTH)
+    v_count_size = prop_to_size(v_count_p, MI_V_SIZE, MA_V_SIZE)
+    e_count_pwidth = prop_to_size(e_count_p, MI_E_PWIDTH, MA_E_PWIDTH)
     arg_map.update(dict(
-        output = path.format('random-2'),
-        vertex_size = v_size,
-        edge_pen_width = e_pwidth,
+        output = path.format('1-3-random-size'),
+        vertex_size = v_count_size,
+        edge_pen_width = e_count_pwidth,
     ))
     graph_draw(**arg_map)
 
     # use fill_color
     arg_map.update(dict(
-        output = path.format('random-3'),
-        vertex_fill_color = v_size,
+        output = path.format('1-4-random-color'),
+        vertex_fill_color = v_count_size,
     ))
     graph_draw(**arg_map)
 
-    # use sfdp_layout
+    # sfdp_layout
     arg_map.update(dict(
-        output = path.format('sfdp-1'),
+        output = path.format('2-1-sfdp'),
         pos = sfdp_layout(g),
     ))
     graph_draw(**arg_map)
 
     # sfdp_layout with only edge's weight
     arg_map.update(dict(
-        output = path.format('sfdp-2'),
+        output = path.format('2-1-sfdp-edge-weight'),
         pos = sfdp_layout(g, eweight=e_count_p),
     ))
     graph_draw(**arg_map)
 
     # sfdp_layout with both edge and vertex's weight
     arg_map.update(dict(
-        output = path.format('sfdp-3'),
+        output = path.format('2-2-sfdp-both-weight'),
         pos = sfdp_layout(g, eweight=e_count_p, vweight=v_count_p),
     ))
     graph_draw(**arg_map)
 
-    # use fruchterman_reingold_layout
+    # fruchterman_reingold_layout
     arg_map.update(dict(
-        output = path.format('fr-1'),
+        output = path.format('3-1-fp'),
         pos = fruchterman_reingold_layout(g),
     ))
     graph_draw(**arg_map)
 
-    # use fruchterman_reingold_layout with weight
+    # fruchterman_reingold_layout with edge's weight
     arg_map.update(dict(
-        output = path.format('fr-2'),
+        output = path.format('3-2-fp-edge-weight'),
         pos = fruchterman_reingold_layout(g, weight=e_count_p),
     ))
     graph_draw(**arg_map)
 
-    # use arf_layout
+    # arf_layout
     arg_map.update(dict(
-        output = path.format('arf-1'),
+        output = path.format('4-1-arf'),
         pos = arf_layout(g),
     ))
     graph_draw(**arg_map)
 
-    # use arf_layout with weight
+    # arf_layout with edge's weight
     arg_map.update(dict(
-        output = path.format('arf-2'),
+        output = path.format('4-2-arf-edge-weight'),
         pos = arf_layout(g, weight=e_count_p),
     ))
     graph_draw(**arg_map)
