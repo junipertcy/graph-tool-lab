@@ -165,7 +165,7 @@ def analyze_graph(g):
 
     v_name_p = g.vp['name']
     v_count_p = g.vp['count']
-    print 'Top 10 Vertex by Count:'
+    print 'Top 10 Vertices by Count:'
     print
     for no, vidx in enumerate(v_count_p.a.argsort()[-10:][::-1], 1):
         v = g.vertex(vidx)
@@ -177,7 +177,7 @@ def analyze_graph(g):
     print
 
     v_closeness_p = g.vp['closeness']
-    print 'Top 10 Vertex by Closeness:'
+    print 'Top 10 Vertices by Closeness:'
     print
     for no, vidx in enumerate(v_closeness_p.a.argsort()[-10:][::-1], 1):
         v = g.vertex(vidx)
