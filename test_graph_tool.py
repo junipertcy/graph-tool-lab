@@ -142,7 +142,7 @@ def analyze_graph(g):
     v_name_p = g.vp['name']
     print 'Top 10 Vertex:'
     print
-    for no, vidx in enumerate(v_count_p.a.argsort()[:-11:-1], 1):
+    for no, vidx in enumerate(v_count_p.a.argsort()[-10:][::-1], 1):
         v = g.vertex(vidx)
         print '    {:2}. {:2} {:2}'.format(
             no,
