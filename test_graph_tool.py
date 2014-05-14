@@ -18,8 +18,9 @@ def compose_graph(lines):
 
     # set up graph
     g = Graph()
-    g.ep['count'] = e_count_p = g.new_edge_property('int')
+    g.vp['name'] = v_name_p = g.new_vertex_property('string')
     g.vp['count'] = v_count_p = g.new_vertex_property('int')
+    g.ep['count'] = e_count_p = g.new_edge_property('int')
 
     # create vertices
     name_v_map = {}
@@ -27,6 +28,7 @@ def compose_graph(lines):
         v = name_v_map.get(name)
         if v is None:
             v = g.add_vertex()
+            v_name_p[v] = name
             v_count_p[v] = 0
             name_v_map[name] = v
         v_count_p[v] += 1
@@ -131,6 +133,24 @@ def render_graph(g, path='output/{}.pdf'):
     ))
     graph_draw(**arg_map)
 
+def analyze_graph(g):
+
+    print 'The graph: {}'.format(g)
+    print
+
+    v_count_p = g.vp['count']
+    v_name_p = g.vp['name']
+    print 'Top 10 Vertex:'
+    print
+    for no, vidx in enumerate(v_count_p.a.argsort()[:-11:-1], 1):
+        v = g.vertex(vidx)
+        print '    {:2}. {:2} {:2}'.format(
+            no,
+            v_name_p[v],
+            v_count_p[v],
+        )
+    print
+
 if __name__ == '__main__':
 
     lines = [
@@ -145,4 +165,5 @@ if __name__ == '__main__':
     ]
     g = compose_graph(lines)
     render_graph(g)
+    analyze_graph(g)
 
