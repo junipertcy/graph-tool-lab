@@ -14,19 +14,12 @@ from graph_tool.draw import (
     arf_layout,
 )
 
-def main():
+def compose_graph(lines):
 
     # set up graph
     g = Graph()
-    e_count_p = g.new_edge_property('int')
-    v_count_p = g.new_vertex_property('int')
-
-    # the test data
-    lines = [
-        ('A1', 'A2', 'O', 'A3', 'A4'),
-        ('B1', 'B2', 'O', 'B3', 'B4'),
-        ('C1', 'C2', 'O', 'A1', 'A2'),
-    ]
+    g.ep['count'] = e_count_p = g.new_edge_property('int')
+    g.vp['count'] = v_count_p = g.new_vertex_property('int')
 
     # create vertices
     name_v_map = {}
@@ -50,26 +43,33 @@ def main():
                 vv_e_map[vv] = e
             e_count_p[e] += 1
 
+    return g
+
+SIZE = 400
+MA_V_SIZE = 400 / 20.
+MI_V_SIZE = MA_V_SIZE / 2.
+MA_E_PWIDTH = MA_V_SIZE / 4.
+MI_E_PWIDTH = MA_E_PWIDTH / 2.
+
+def render_graph(g, path='output/{}.pdf'):
+
     # draw the graph
-    size = 400
-    ma_v_size = 400 / 20.
-    mi_v_size = ma_v_size / 2.
-    ma_e_pwidth = ma_v_size / 4.
-    mi_e_pwidth = ma_e_pwidth / 2.
     arg_map = dict(
         g = g,
-        output = "output/random-1.pdf",
-        output_size = (size, size),
-        vertex_size = ma_v_size,
-        edge_pen_width = ma_e_pwidth,
+        output = path.format('random-1'),
+        output_size = (SIZE, SIZE),
+        vertex_size = MA_V_SIZE,
+        edge_pen_width = MA_E_PWIDTH,
     )
     graph_draw(**arg_map)
 
     # use prop_to_size to draw
-    v_size = prop_to_size(v_count_p, mi_v_size, ma_v_size)
-    e_pwidth = prop_to_size(e_count_p, mi_e_pwidth, ma_e_pwidth)
+    v_count_p = g.vp['count']
+    e_count_p = g.ep['count']
+    v_size = prop_to_size(v_count_p, MI_V_SIZE, MA_V_SIZE)
+    e_pwidth = prop_to_size(e_count_p, MI_E_PWIDTH, MA_E_PWIDTH)
     arg_map.update(dict(
-        output = "output/random-2.pdf",
+        output = path.format('random-2'),
         vertex_size = v_size,
         edge_pen_width = e_pwidth,
     ))
@@ -77,53 +77,60 @@ def main():
 
     # use fill_color
     arg_map.update(dict(
-        output = "output/random-3.pdf",
+        output = path.format('random-3'),
         vertex_fill_color = v_size,
     ))
     graph_draw(**arg_map)
 
     # use sfdp_layout
     arg_map.update(dict(
-        output = "output/sfdp-1.pdf",
+        output = path.format('sfdp-1'),
         pos = sfdp_layout(g),
     ))
     graph_draw(**arg_map)
 
     # sfdp_layout with weight
     arg_map.update(dict(
-        output = "output/sfdp-2.pdf",
+        output = path.format('sfdp-2'),
         pos = sfdp_layout(g, vweight=v_count_p, eweight=e_count_p),
     ))
     graph_draw(**arg_map)
 
     # use fruchterman_reingold_layout
     arg_map.update(dict(
-        output = "output/fr-1.pdf",
+        output = path.format('fr-1'),
         pos = fruchterman_reingold_layout(g),
     ))
     graph_draw(**arg_map)
 
     # use fruchterman_reingold_layout with weight
     arg_map.update(dict(
-        output = "output/fr-2.pdf",
+        output = path.format('fr-2'),
         pos = fruchterman_reingold_layout(g, weight=e_count_p),
     ))
     graph_draw(**arg_map)
 
     # use arf_layout
     arg_map.update(dict(
-        output = "output/arf-1.pdf",
+        output = path.format('arf-1'),
         pos = arf_layout(g),
     ))
     graph_draw(**arg_map)
 
     # use arf_layout with weight
     arg_map.update(dict(
-        output = "output/arf-2.pdf",
+        output = path.format('arf-2'),
         pos = arf_layout(g, weight=e_count_p),
     ))
     graph_draw(**arg_map)
 
 if __name__ == '__main__':
 
-    main()
+    lines = [
+        ('A1', 'A2', 'O', 'A3', 'A4'),
+        ('B1', 'B2', 'O', 'B3', 'B4'),
+        ('C1', 'C2', 'O', 'A1', 'A2'),
+    ]
+    g = compose_graph(lines)
+    render_graph(g)
+
