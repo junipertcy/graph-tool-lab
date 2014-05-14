@@ -4,7 +4,6 @@
 from time import time
 from itertools import chain
 from collections import defaultdict
-from numpy.random import seed
 from graph_tool import Graph
 from graph_tool.centrality import closeness
 from graph_tool.draw import (
