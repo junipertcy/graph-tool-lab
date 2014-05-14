@@ -118,14 +118,14 @@ def render_graph(g, path='output/{}.pdf'):
 
     # sfdp_layout with only edge's weight
     arg_map.update(dict(
-        output = path.format('2-1-sfdp-edge-weight'),
+        output = path.format('2-2-sfdp-edge-weight'),
         pos = sfdp_layout(g, eweight=e_count_p),
     ))
     graph_draw(**arg_map)
 
     # sfdp_layout with both edge and vertex's weight
     arg_map.update(dict(
-        output = path.format('2-2-sfdp-both-weight'),
+        output = path.format('2-3-sfdp-both-weight'),
         pos = sfdp_layout(g, eweight=e_count_p, vweight=v_count_p),
     ))
     graph_draw(**arg_map)
