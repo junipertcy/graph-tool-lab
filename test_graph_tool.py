@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 from time import time
 from itertools import chain
 from collections import defaultdict
@@ -14,6 +15,13 @@ from graph_tool.draw import (
     fruchterman_reingold_layout,
     arf_layout,
 )
+
+DEBUG = True
+
+def debug(s, *args, **kargs):
+    if not DEBUG:
+        return
+    print >> sys.stderr, '[DEBUG]', s.format(*args, **kargs)
 
 def compose_graph(lines):
 
@@ -58,8 +66,11 @@ def compose_graph(lines):
     g.vp['closeness'] = v_closeness_p = g.new_vertex_property('float')
     e_inverse_count_p = g.new_edge_property('int')
     e_inverse_count_p.a = e_count_p.a.max()-e_count_p.a
+    debug('e_inverse_count_p: {}', e_inverse_count_p.a)
     closeness(g, weight=e_inverse_count_p, vprop=v_closeness_p)
+    debug('v_closeness_p    : {}', v_closeness_p.a)
     v_closeness_p.a = nan_to_num(v_closeness_p.a)
+    debug('v_closeness_p    : {}', v_closeness_p.a)
 
     return g
 
