@@ -21,7 +21,7 @@ DEBUG = True
 def debug(s, *args, **kargs):
     if not DEBUG:
         return
-    print >> sys.stderr, '[DEBUG]', s.format(*args, **kargs)
+    print >> sys.stderr, '[DEBUG]', str(s).format(*args, **kargs)
 
 def compose_graph(lines):
 
