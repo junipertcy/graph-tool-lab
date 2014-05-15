@@ -66,11 +66,11 @@ def compose_graph(lines):
     g.vp['closeness'] = v_closeness_p = g.new_vertex_property('float')
     e_inverse_count_p = g.new_edge_property('int')
     e_inverse_count_p.a = e_count_p.a.max()-e_count_p.a
-    debug('e_inverse_count_p: {}', e_inverse_count_p.a)
+    debug('e_inverse_count_p.a: {}', e_inverse_count_p.a)
     closeness(g, weight=e_inverse_count_p, vprop=v_closeness_p)
-    debug('v_closeness_p    : {}', v_closeness_p.a)
+    debug('v_closeness_p.a    : {}', v_closeness_p.a)
     v_closeness_p.a = nan_to_num(v_closeness_p.a)
-    debug('v_closeness_p    : {}', v_closeness_p.a)
+    debug('v_closeness_p.a    : {}', v_closeness_p.a)
 
     return g
 
