@@ -72,6 +72,14 @@ def compose_graph(lines):
     v_closeness_p.a = nan_to_num(v_closeness_p.a)
     debug('v_closeness_p.a    : {}', v_closeness_p.a)
 
+    # fillter
+    g.vp['picked'] = v_picked_p = g.new_vertex_property('bool')
+    debug('v_count_p.a.mean() : {}', v_count_p.a.mean())
+    v_picked_p.a = v_count_p.a > v_count_p.a.mean()
+    debug('v_picked_p.a       : {}', v_picked_p.a)
+    g.set_vertex_filter(v_picked_p)
+    g.set_vertex_filter(None)
+
     return g
 
 SIZE = 400
