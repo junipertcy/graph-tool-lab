@@ -19,35 +19,43 @@ def compose_graph(lines):
 
     # set up graph
     g = Graph()
-    g.vp['name'] = v_name_p = g.new_vertex_property('string')
+    g.vp['pid'] = v_pid_p = g.new_vertex_property('string')
     g.vp['count'] = v_count_p = g.new_vertex_property('int')
-    g.vp['closeness'] = v_closeness_p = g.new_vertex_property('float')
     g.ep['count'] = e_count_p = g.new_edge_property('int')
 
-    # create vertices
-    name_v_map = {}
-    for name in chain(*lines):
-        v = name_v_map.get(name)
+    pid_v_map = {}
+    uid_last_v_map = {}
+    vv_e_map = {}
+
+    for uid, pid in uid_pid_pairs:
+
+        # vertex
+
+        v = pid_v_map.get(pid)
         if v is None:
             v = g.add_vertex()
-            v_name_p[v] = name
+            v_pid_p[v] = pid
             v_count_p[v] = 0
-            name_v_map[name] = v
+            pid_v_map[pid] = v
         v_count_p[v] += 1
 
-    # create edges
-    vv_e_map = {}
-    for line in lines:
-        for i in xrange(len(line)-1):
-            vv = (name_v_map[line[i]], name_v_map[line[i+1]])
-            e = vv_e_map.get(vv)
-            if e is None:
-                e = g.add_edge(*vv)
-                e_count_p[e] = 0
-                vv_e_map[vv] = e
-            e_count_p[e] += 1
+        # edge
+
+        last_v = uid_last_v_map.get(uid)
+        uid_last_v_map[uid] = v
+        if last_v is None:
+            continue
+
+        vv = (last_v, v)
+        e = vv_e_map.get(vv)
+        if e is None:
+            e = g.add_edge(*vv)
+            e_count_p[e] = 0
+            vv_e_map[vv] = e
+        e_count_p[e] += 1
 
     # calculate closeness
+    g.vp['closeness'] = v_closeness_p = g.new_vertex_property('float')
     e_inverse_count_p = g.new_edge_property('int')
     e_inverse_count_p.a = e_count_p.a.max()-e_count_p.a
     closeness(g, weight=e_inverse_count_p, vprop=v_closeness_p)
@@ -163,7 +171,7 @@ def analyze_graph(g):
     print 'The graph: {}'.format(g)
     print
 
-    v_name_p = g.vp['name']
+    v_pid_p = g.vp['pid']
     v_count_p = g.vp['count']
     print 'Top 10 Vertices by Count:'
     print
@@ -171,7 +179,7 @@ def analyze_graph(g):
         v = g.vertex(vidx)
         print '    {:2}. {:2} {:2}'.format(
             no,
-            v_name_p[v],
+            v_pid_p[v],
             v_count_p[v],
         )
     print
@@ -183,24 +191,44 @@ def analyze_graph(g):
         v = g.vertex(vidx)
         print '    {:2}. {:2} {:f}'.format(
             no,
-            v_name_p[v],
+            v_pid_p[v],
             v_closeness_p[v],
         )
     print
 
 if __name__ == '__main__':
 
-    lines = [
-        ('A1', 'A2', 'O', 'A3', 'A4'),
-        ('A1', 'A2', 'O', 'A3', 'A4'),
-        ('A1', 'A2', 'O', 'A3', 'A4'),
-        ('B1', 'B2', 'O', 'B3', 'B4'),
-        ('B1', 'B2', 'O', 'B3', 'B4'),
-        ('C1', 'C2', 'O', 'A1', 'A2'),
-        ('C1', 'C2', 'O', 'C3', 'C4'),
-        ('D1', 'D2', 'O', 'D3', 'D4'),
+    uid_pid_pairs = [
+
+        ('U1', 'A1'),
+        ('U1', 'A2'),
+        ('U1', 'A3'),
+        ('U1', 'B1'),
+        ('U1', 'B2'),
+        ('U1', 'C2'),
+        ('U1', 'A2'),
+        ('U1', 'A4'),
+
+        ('U2', 'A1'),
+        ('U2', 'A2'),
+        ('U2', 'B1'),
+        ('U2', 'C1'),
+        ('U2', 'A1'),
+
+        ('U3', 'A1'),
+        ('U3', 'B1'),
+        ('U3', 'C1'),
+        ('U3', 'A1'),
+
+        ('U4', 'A1'),
+        ('U4', 'B1'),
+        ('U4', 'C1'),
+
+        ('U5', 'A1'),
+        ('U5', 'B1'),
+
     ]
-    g = compose_graph(lines)
+    g = compose_graph(uid_pid_pairs)
     render_graph(g)
     analyze_graph(g)
 
