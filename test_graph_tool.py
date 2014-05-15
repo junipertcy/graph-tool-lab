@@ -75,7 +75,7 @@ def compose_graph(lines):
     return g
 
 SIZE = 400
-MA_V_SIZE = 400 / 20.
+MA_V_SIZE = SIZE / 20.
 MI_V_SIZE = MA_V_SIZE / 2.
 MA_E_PWIDTH = MA_V_SIZE / 4.
 MI_E_PWIDTH = MA_E_PWIDTH / 2.
