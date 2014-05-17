@@ -109,29 +109,29 @@ def render_graph(g, path='output/{}.pdf'):
     # use prop_to_size
     v_count_p = g.vp['count']
     e_count_p = g.ep['count']
-    v_count_size = prop_to_size(v_count_p, MI_V_SIZE, MA_V_SIZE)
-    e_count_pwidth = prop_to_size(e_count_p, MI_E_PWIDTH, MA_E_PWIDTH)
+    v_count_size_p = prop_to_size(v_count_p, MI_V_SIZE, MA_V_SIZE)
+    e_count_pwidth_p = prop_to_size(e_count_p, MI_E_PWIDTH, MA_E_PWIDTH)
     arg_map.update(dict(
         output = path.format('1-3-random-size'),
-        vertex_size = v_count_size,
-        edge_pen_width = e_count_pwidth,
+        vertex_size = v_count_size_p,
+        edge_pen_width = e_count_pwidth_p,
     ))
     graph_draw(**arg_map)
 
     # use fill_color
     arg_map.update(dict(
         output = path.format('1-4-random-color'),
-        vertex_fill_color = v_count_size,
+        vertex_fill_color = v_count_size_p,
     ))
     graph_draw(**arg_map)
 
     # use closeness
     v_closeness_p = g.vp['closeness']
-    v_closeness_size = prop_to_size(v_closeness_p, MI_V_SIZE, MA_V_SIZE)
+    v_closeness_size_p = prop_to_size(v_closeness_p, MI_V_SIZE, MA_V_SIZE)
     arg_map.update(dict(
         output = path.format('1-5-random-closeness'),
-        vertex_size = v_closeness_size,
-        vertex_fill_color = v_closeness_size,
+        vertex_size = v_closeness_size_p,
+        vertex_fill_color = v_closeness_size_p,
     ))
     graph_draw(**arg_map)
 
