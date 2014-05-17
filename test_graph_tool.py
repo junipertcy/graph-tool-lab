@@ -88,7 +88,7 @@ MI_V_SIZE = MA_V_SIZE / 2.
 MA_E_PWIDTH = MA_V_SIZE / 4.
 MI_E_PWIDTH = MA_E_PWIDTH / 2.
 
-def render_graph(g, path='output/{}.pdf'):
+def render_graph(g, path='graph/{}.pdf'):
 
     # the simplest way
     arg_map = dict(
