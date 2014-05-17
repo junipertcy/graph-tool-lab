@@ -23,7 +23,7 @@ def debug(s, *args, **kargs):
         return
     print >> sys.stderr, '[DEBUG]', str(s).format(*args, **kargs)
 
-def compose_graph(lines):
+def compose_graph(uid_pid_pairs):
 
     # set up graph
     g = Graph()
