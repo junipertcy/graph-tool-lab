@@ -121,7 +121,7 @@ def render_graph(g, path='graph/{}.pdf'):
     # use fill_color
     arg_map.update(dict(
         output = path.format('1-4-random-color'),
-        vertex_fill_color = v_count_size_p,
+        vertex_fill_color = v_count_p,
     ))
     graph_draw(**arg_map)
 
