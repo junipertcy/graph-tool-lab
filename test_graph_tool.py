@@ -119,7 +119,9 @@ def render_graph(g, path='graph/{}.pdf'):
     graph_draw(**arg_map)
 
     # use fill_color
+    debug('v_count_p.a         : {}', v_count_p.a)
     v_color_by_count_p = prop_to_size(v_count_p, 0, 1)
+    debug('v_color_by_count_p.a: {}', v_color_by_count_p.a)
     arg_map.update(dict(
         output = path.format('1-4-random-color'),
         vertex_fill_color = v_color_by_count_p,
