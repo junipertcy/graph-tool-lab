@@ -131,7 +131,6 @@ def render_graph(g, path='graph/{}.pdf'):
     closeness_arg_map = arg_map.copy()
     closeness_arg_map.update(dict(
         output = path.format('1-5-random-closeness'),
-        vertex_size = v_closeness_size_p,
         vertex_fill_color = v_closeness_size_p,
     ))
     graph_draw(**closeness_arg_map)
