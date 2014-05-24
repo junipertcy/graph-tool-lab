@@ -119,19 +119,20 @@ def render_graph(g, path='graph/{}.pdf'):
     graph_draw(**arg_map)
 
     # use fill_color
+    v_color_by_count_p = prop_to_size(v_count_p, 0, 1)
     arg_map.update(dict(
         output = path.format('1-4-random-color'),
-        vertex_fill_color = v_count_p,
+        vertex_fill_color = v_color_by_count_p,
     ))
     graph_draw(**arg_map)
 
     # use closeness
     v_closeness_p = g.vp['closeness']
-    v_closeness_size_p = prop_to_size(v_closeness_p, MI_V_SIZE, MA_V_SIZE)
+    v_color_by_closeness_p = prop_to_size(v_closeness_p, 0, 1)
     closeness_arg_map = arg_map.copy()
     closeness_arg_map.update(dict(
         output = path.format('1-5-random-closeness'),
-        vertex_fill_color = v_closeness_size_p,
+        vertex_fill_color = v_color_by_closeness_p,
     ))
     graph_draw(**closeness_arg_map)
 
