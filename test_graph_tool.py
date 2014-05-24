@@ -109,12 +109,12 @@ def render_graph(g, path='graph/{}.pdf'):
     # use prop_to_size
     v_count_p = g.vp['count']
     e_count_p = g.ep['count']
-    v_count_size_p = prop_to_size(v_count_p, MI_V_SIZE, MA_V_SIZE)
-    e_count_pwidth_p = prop_to_size(e_count_p, MI_E_PWIDTH, MA_E_PWIDTH)
+    v_size_by_count_p = prop_to_size(v_count_p, MI_V_SIZE, MA_V_SIZE)
+    e_pwidth_by_count_p = prop_to_size(e_count_p, MI_E_PWIDTH, MA_E_PWIDTH)
     arg_map.update(dict(
         output = path.format('1-3-random-size'),
-        vertex_size = v_count_size_p,
-        edge_pen_width = e_count_pwidth_p,
+        vertex_size = v_size_by_count_p,
+        edge_pen_width = e_pwidth_by_count_p,
     ))
     graph_draw(**arg_map)
 
