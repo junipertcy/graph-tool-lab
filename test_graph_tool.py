@@ -165,7 +165,7 @@ def render_graph(g, path='graph/{}.pdf'):
 
     # fruchterman_reingold_layout
     arg_map.update(dict(
-        output = path.format('3-1-fp'),
+        output = path.format('3-1-fr'),
         pos = fruchterman_reingold_layout(g),
     ))
     graph_draw(**arg_map)
