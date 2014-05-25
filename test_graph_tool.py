@@ -131,12 +131,16 @@ def render_graph(g, path='graph/{}.pdf'):
     # use closeness
     v_closeness_p = g.vp['closeness']
     v_color_by_closeness_p = prop_to_size(v_closeness_p, 0, 1)
-    closeness_arg_map = arg_map.copy()
-    closeness_arg_map.update(dict(
+    #closeness_arg_map = arg_map.copy()
+    #closeness_arg_map.update(dict(
+    #    output = path.format('1-5-random-closeness'),
+    #    vertex_fill_color = v_color_by_closeness_p,
+    #))
+    arg_map.update(dict(
         output = path.format('1-5-random-closeness'),
         vertex_fill_color = v_color_by_closeness_p,
     ))
-    graph_draw(**closeness_arg_map)
+    graph_draw(**arg_map)
 
     # sfdp_layout
     arg_map.update(dict(
